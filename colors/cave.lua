@@ -1,6 +1,5 @@
 -- cave.lua
 -- Neovim colorscheme inspired by Noita and Catppuccin.
--- Palette drawn from the game's potions, materials, and cave atmosphere.
 
 vim.cmd("hi clear")
 if vim.fn.exists("syntax_on") == 1 then
@@ -15,7 +14,6 @@ local p = {
 	-- Cave environments
 	cave_rock        = "#0e0c10",
 	cave_shadow      = "#130f16",
-	cave_deep        = "#080608",
 	void             = "#060408",
 	cave_wall        = "#2a2432",
 	cave_floor       = "#100d14",
@@ -31,7 +29,7 @@ local p = {
 	-- Colors
 	emerald          = "#3d8c5a",
 	lake             = "#4e8fd4",
-	charm            = "#c85ca8",
+	fungus           = "#c85ca8",
 	acid             = "#9cc028",
 	honey            = "#c89030",
 	blood            = "#c03838",
@@ -40,7 +38,6 @@ local p = {
 	lava             = "#d46818",
 	aura             = "#6a3a9a",
 	heal             = "#40b840",
-	heal_bright      = "#50b840",
 	gold             = "#e8d030",
 	spark            = "#20d8f0",
 	sea              = "#20b8a0",
@@ -54,16 +51,16 @@ local p = {
 	heal_bg          = "#0e1a0e",
 	danger_bg        = "#200e0e",
 	-- Diff backgrounds
-	diff_add         = "#1a3820",
-	diff_del         = "#2e1212",
-	diff_change      = "#1a2e4a",
+	toxic            = "#2e3e06",
+	rust             = "#3a1010",
+	whiskey          = "#2e2008",
 }
 
 -- ── Semantic assignments ──────────────────────────────────────────────────────
 local c = {
 	bg1          = p.cave_rock,
 	bg2          = p.cave_shadow,
-	bg3          = p.cave_deep,
+	bg3          = p.void,
 	bg4          = p.void,
 	bg_alt       = p.cave_wall,
 	act1         = p.cave_floor,
@@ -78,7 +75,7 @@ local c = {
 	comment_bg   = p.emerald_bg,
 	const        = p.honey,
 	err          = p.danger,
-	func         = p.charm,
+	func         = p.fungus,
 	head1        = p.lake,
 	head1_bg     = p.aura_bg,
 	head2        = p.emerald,
@@ -100,13 +97,13 @@ local c = {
 	type         = p.blood,
 	var          = p.fog,
 	war          = p.lava,
-	green        = p.heal_bright,
+	green        = p.heal,
 	green_bg     = p.heal_bg,
-	green_bg_s   = p.diff_add,
+	diff_add     = p.toxic,
 	red          = p.danger,
 	red_bg       = p.danger_bg,
-	red_bg_s     = p.diff_del,
-	blue_bg_s    = p.diff_change,
+	diff_del     = p.rust,
+	diff_change  = p.whiskey,
 	yellow_bg    = p.honey_bg,
 }
 
@@ -129,10 +126,10 @@ local hl = {
 	CursorColumn = { bg = c.highlight_dim },
 	CursorLineNr = { fg = c.keyword, bold = true },
 	Directory = { fg = c.keyword },
-	DiffAdd = { bg = c.green_bg_s },
-	DiffChange = { bg = c.blue_bg_s },
-	DiffDelete = { bg = c.red_bg_s },
-	DiffText = { bg = c.blue_bg_s, bold = true },
+	DiffAdd = { bg = c.diff_add },
+	DiffChange = { bg = c.diff_change },
+	DiffDelete = { bg = c.diff_del },
+	DiffText = { bg = c.diff_change, bold = true },
 	EndOfBuffer = { fg = c.bg3 },
 	ErrorMsg = { fg = c.err, bold = true },
 	VertSplit = { fg = c.border, bg = c.bg1 },
@@ -141,6 +138,7 @@ local hl = {
 	FoldColumn = { fg = c.lnum, bg = c.bg1 },
 	SignColumn = { fg = c.base, bg = c.bg1 },
 	IncSearch = { fg = c.bg1, bg = c.war, bold = true },
+	YankFlash = { bg = p.spark, fg = p.cave_rock },
 	Substitute = { fg = c.bg1, bg = p.blood, bold = true },
 	LineNr = { fg = c.lnum },
 	LineNrAbove = { fg = c.lnum },
@@ -173,8 +171,8 @@ local hl = {
 	TabLineFill = { bg = c.bg2 },
 	TabLineSel = { fg = c.base, bg = c.act2 },
 	Title = { fg = c.keyword, bold = true },
-	Visual = { bg = c.highlight },
-	VisualNOS = { bg = c.highlight },
+	Visual = { bg = c.highlight, fg = p.bone },
+	VisualNOS = { bg = c.highlight, fg = p.bone },
 	WarningMsg = { fg = c.war, bold = true },
 	Whitespace = { fg = c.bg_alt },
 	WildMenu = { fg = c.base, bg = c.act2 },
@@ -282,9 +280,9 @@ local hl = {
 	["@tag.builtin"] = { fg = c.keyword },
 	["@tag.attribute"] = { fg = c.var },
 	["@tag.delimiter"] = { fg = c.base_dim },
-	["@diff.plus"] = { fg = c.green, bg = c.green_bg_s },
-	["@diff.minus"] = { fg = c.red, bg = c.red_bg_s },
-	["@diff.delta"] = { fg = c.keyword, bg = c.blue_bg_s },
+	["@diff.plus"] = { fg = c.green, bg = c.diff_add },
+	["@diff.minus"] = { fg = c.red, bg = c.diff_del },
+	["@diff.delta"] = { fg = c.keyword, bg = c.diff_change },
 	["@markup.strong"] = { bold = true },
 	["@markup.italic"] = { italic = true },
 	["@markup.strikethrough"] = { strikethrough = true },
@@ -376,26 +374,19 @@ local hl = {
 	GitSignsAddNr = { fg = c.green },
 	GitSignsChangeNr = { fg = c.keyword },
 	GitSignsDeleteNr = { fg = c.red },
-	GitSignsAddLn = { bg = c.green_bg_s },
-	GitSignsChangeLn = { bg = c.blue_bg_s },
-	GitSignsDeleteLn = { bg = c.red_bg_s },
+	GitSignsAddLn = { bg = c.diff_add },
+	GitSignsChangeLn = { bg = c.diff_change },
+	GitSignsDeleteLn = { bg = c.diff_del },
 	GitSignsAddInline = { fg = c.bg1, bg = c.green },
 	GitSignsChangeInline = { fg = c.bg1, bg = c.keyword },
 	GitSignsDeleteInline = { fg = c.bg1, bg = c.red },
 
 	-- ── snacks.nvim ───────────────────────────────────────────────────────────
-	-- Dashboard header gradient: gold (#c89030) → red (#e03030)
-	Gradient1 = { fg = "#c89030" },
-	Gradient2 = { fg = "#cd7d30" },
-	Gradient3 = { fg = "#d26a30" },
-	Gradient4 = { fg = "#d65630" },
-	Gradient5 = { fg = "#db4330" },
-	Gradient6 = { fg = "#e03030" },
 	SnacksDashboardHeader = { fg = p.acid, bold = true },
 	SnacksDashboardFooter = { fg = c.base_dim, italic = true },
 	SnacksDashboardTitle = { fg = c.keyword, bold = true },
 	SnacksDashboardDesc = { fg = c.base },
-	SnacksDashboardKey = { fg = p.charm, bold = true },
+	SnacksDashboardKey = { fg = p.fungus, bold = true },
 	SnacksDashboardIcon = { fg = c.comment },
 	SnacksDashboardDir = { fg = c.base_dim },
 	SnacksDashboardFile = { fg = c.base },
@@ -426,7 +417,7 @@ local hl = {
 	SnacksPickerDir = { fg = c.base_dim },
 	SnacksPickerFile = { fg = c.base },
 	SnacksPickerMatch = { fg = c.mat, bold = true },
-	SnacksPickerSelected = { fg = p.charm },
+	SnacksPickerSelected = { fg = p.fungus },
 	SnacksPickerToggle = { fg = c.keyword },
 	SnacksPickerInputBorder = { fg = c.border },
 	SnacksPickerInputTitle = { fg = c.keyword, bold = true },
@@ -514,7 +505,7 @@ local hl = {
 	BufferLineTruncMarker = { fg = c.base_dim, bg = c.bg2 },
 
 	-- ── which-key ─────────────────────────────────────────────────────────────
-	WhichKey = { fg = p.charm },
+	WhichKey = { fg = p.fungus },
 	WhichKeyGroup = { fg = c.keyword },
 	WhichKeyDesc = { fg = c.base },
 	WhichKeySeparator = { fg = c.base_dim },
@@ -526,7 +517,7 @@ local hl = {
 	TroubleNormal = { fg = c.base, bg = c.bg2 },
 	TroubleNormalNC = { fg = c.base, bg = c.bg2 },
 	TroubleText = { fg = c.base },
-	TroubleCount = { fg = p.charm, bg = c.bg2, bold = true },
+	TroubleCount = { fg = p.fungus, bg = c.bg2, bold = true },
 	TroubleFileName = { fg = c.comment },
 	TroubleIconArray = { fg = c.type },
 	TroubleIconBoolean = { fg = c.const },
@@ -566,14 +557,14 @@ local hl = {
 	TodoBgWARN = { fg = c.bg1, bg = c.war, bold = true },
 	TodoBgNOTE = { fg = c.bg1, bg = c.comment, bold = true },
 	TodoBgPERF = { fg = c.bg1, bg = c.const, bold = true },
-	TodoBgTEST = { fg = c.bg1, bg = p.charm, bold = true },
+	TodoBgTEST = { fg = c.bg1, bg = p.fungus, bold = true },
 	TodoFgTODO = { fg = c.keyword },
 	TodoFgFIX = { fg = c.err },
 	TodoFgHACK = { fg = c.war },
 	TodoFgWARN = { fg = c.war },
 	TodoFgNOTE = { fg = c.comment },
 	TodoFgPERF = { fg = c.const },
-	TodoFgTEST = { fg = p.charm },
+	TodoFgTEST = { fg = p.fungus },
 	TodoSignTODO = "TodoFgTODO",
 	TodoSignFIX = "TodoFgFIX",
 	TodoSignHACK = "TodoFgHACK",
@@ -619,7 +610,7 @@ vim.g.terminal_color_6 = p.sea -- cyan
 vim.g.terminal_color_7 = p.bone -- white
 vim.g.terminal_color_8 = p.ash -- bright black
 vim.g.terminal_color_9 = p.danger -- bright red
-vim.g.terminal_color_10 = p.gold -- bright green
+vim.g.terminal_color_10 = p.heal -- bright green
 vim.g.terminal_color_11 = p.honey -- bright yellow
 vim.g.terminal_color_12 = p.fog -- bright blue
 vim.g.terminal_color_13 = c.func -- bright magenta

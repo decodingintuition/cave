@@ -8,7 +8,7 @@ local act1     = "#100d14" -- cave_floor:  active status bg
 local base     = "#d4c8a8" -- bone:        default foreground
 local base_dim = "#6e6458" -- ash:         dimmed text
 local keyword  = "#4e8fd4" -- lake:        cursor / selection
-local func     = "#c85ca8" -- charm:       active tab badge
+local func     = "#c85ca8" -- fungus:       active tab badge
 local pale_gray = "#8878a8" -- haze:       inactive tab badge
 local highlight = "#4a2e78" -- aura_dim:   visual selection
 
@@ -24,10 +24,10 @@ return {
 		ansi = {
 			bg1,       -- 0  black    (cave_rock / bg1)
 			"#e03030", -- 1  red      (danger / err)
-			"#9cc028", -- 2  green    (acid / str)
+			"#9cc028", -- 2  green    (acid)
 			"#c89030", -- 3  yellow   (honey / head4)
 			keyword,   -- 4  blue     (lake / keyword)
-			"#c85ca8", -- 5  magenta  (charm / func)
+			"#c85ca8", -- 5  magenta  (fungus / func)
 			"#20b8a0", -- 6  cyan     (sea)
 			base,      -- 7  white    (bone / base)
 		},
@@ -37,7 +37,7 @@ return {
 			"#e8d030", -- 10 bright green   (gold / mat)
 			"#c89030", -- 11 bright yellow  (honey)
 			"#8868c0", -- 12 bright blue    (fog / var)
-			func,      -- 13 bright magenta (charm / func)
+			func,      -- 13 bright magenta (fungus / func)
 			"#20d8f0", -- 14 bright cyan    (spark)
 			"#e8dcc0", -- 15 bright white   (ivory / cursor)
 		},
